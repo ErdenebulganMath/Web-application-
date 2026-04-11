@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const container = document.getElementById('sidebar-container');
   if (!container) return;
 
-  fetch('./components/sidebar.html')
+  fetch('../components/sidebar.html')
     .then(res => {
       if (!res.ok) throw new Error('Файл олдсонгүй: ' + res.status);
       return res.text();

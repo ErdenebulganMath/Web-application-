@@ -4,110 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>EduLearn – Тохиргоо</title>
-  <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" href="css/sidebar.css">
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/sidebar.css">
+  <link rel="stylesheet" href="../css/settings.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Fraunces:ital,wght@0,700;1,400&display=swap" rel="stylesheet" />
-  <style>
-    .settings-wrap {
-      display: grid;
-      grid-template-columns: 220px 1fr;
-      gap: 24px;
-      margin-top: 28px;
-    }
-    /* ── NAV ── */
-    .settings-nav {
-      background: var(--white); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 12px 8px;
-      align-self: start;
-    }
-    .nav-item {
-      display: flex; align-items: center; gap: 10px;
-      padding: 10px 12px; border-radius: var(--radius-sm);
-      font-size: 13.5px; font-weight: 500; color: var(--muted);
-      cursor: pointer; transition: background .12s, color .12s;
-    }
-    .nav-item i { font-size: 15px; width: 18px; text-align: center; }
-    .nav-item:hover { background: var(--violet-pale); color: var(--violet); }
-    .nav-item.active { background: var(--violet-light); color: var(--violet); font-weight: 600; }
-
-    /* ── PANELS ── */
-    .settings-panel { display: none; }
-    .settings-panel.active { display: block; }
-    .s-card {
-      background: var(--white); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 28px 32px; margin-bottom: 20px;
-    }
-    .s-card h3 {
-      font-family: 'Fraunces', serif; font-size: 18px; font-weight: 700;
-      margin-bottom: 4px;
-    }
-    .s-card .s-sub { font-size: 13px; color: var(--muted); margin-bottom: 22px; }
-
-    /* Form fields */
-    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
-    .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
-    .field label { font-size: 12.5px; font-weight: 600; color: var(--text); }
-    .field input, .field select, .field textarea {
-      padding: 10px 13px; border: 1px solid var(--border); border-radius: 9px;
-      font-family: 'Sora', sans-serif; font-size: 13.5px; color: var(--text);
-      background: var(--white); outline: none;
-      transition: border-color .15s, box-shadow .15s;
-    }
-    .field input:focus, .field select:focus, .field textarea:focus {
-      border-color: var(--violet-mid);
-      box-shadow: 0 0 0 3px rgba(124,58,237,.12);
-    }
-    .field textarea { resize: vertical; min-height: 80px; }
-
-    /* Toggle switch */
-    .toggle-row {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 12px 0; border-bottom: 1px solid var(--border);
-    }
-    .toggle-row:last-child { border-bottom: none; }
-    .toggle-info h4 { font-size: 13.5px; font-weight: 600; margin-bottom: 2px; }
-    .toggle-info p  { font-size: 12px; color: var(--muted); }
-    .toggle {
-      position: relative; width: 42px; height: 24px; flex-shrink: 0;
-    }
-    .toggle input { opacity: 0; width: 0; height: 0; }
-    .slider {
-      position: absolute; inset: 0; background: #d4d4d8;
-      border-radius: 99px; cursor: pointer; transition: background .2s;
-    }
-    .slider::before {
-      content: ''; position: absolute;
-      width: 18px; height: 18px; border-radius: 50%;
-      left: 3px; top: 3px; background: #fff;
-      transition: transform .2s; box-shadow: 0 1px 4px rgba(0,0,0,.2);
-    }
-    .toggle input:checked + .slider { background: var(--violet-mid); }
-    .toggle input:checked + .slider::before { transform: translateX(18px); }
-
-    /* Save btn */
-    .save-btn {
-      background: var(--violet-mid); color: #fff;
-      padding: 11px 28px; border-radius: 9px; border: none;
-      font-family: 'Sora', sans-serif; font-size: 13px; font-weight: 600;
-      cursor: pointer; transition: background .15s, transform .12s;
-    }
-    .save-btn:hover { background: var(--violet); transform: translateY(-1px); }
-    .save-confirm {
-      display: inline-block; font-size: 12.5px; color: #22c55e;
-      margin-left: 12px; opacity: 0; transition: opacity .3s;
-    }
-
-    /* Danger zone */
-    .danger-btn {
-      background: transparent; color: var(--rose);
-      border: 2px solid var(--rose); padding: 10px 22px;
-      border-radius: 9px; font-family: 'Sora', sans-serif;
-      font-size: 13px; font-weight: 600; cursor: pointer;
-      transition: background .15s, color .15s;
-    }
-    .danger-btn:hover { background: var(--rose); color: #fff; }
-  </style>
 </head>
 <body>
 
@@ -290,81 +191,7 @@
   </div>
 </div>
 
-<script src="js/load.js"></script>
-<script>
-// ── Nav switching ──
-document.querySelectorAll('.nav-item').forEach(item => {
-  item.addEventListener('click', () => {
-    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-    document.querySelectorAll('.settings-panel').forEach(p => p.classList.remove('active'));
-    item.classList.add('active');
-    document.getElementById('panel-' + item.dataset.panel).classList.add('active');
-  });
-});
-
-// ── Pre-fill from sessionStorage ──
-(function () {
-  document.getElementById('set-name').value  = sessionStorage.getItem('user_name')  || '';
-  document.getElementById('set-email').value = sessionStorage.getItem('user_email') || '';
-  const role = sessionStorage.getItem('user_role') || 'student';
-  document.getElementById('set-role').value  = role;
-})();
-
-// ── Save helpers ──
-function flashConfirm(id) {
-  const el = document.getElementById(id);
-  el.style.opacity = '1';
-  setTimeout(() => { el.style.opacity = '0'; }, 2500);
-}
-
-function saveAccount() {
-  const name  = document.getElementById('set-name').value.trim();
-  const email = document.getElementById('set-email').value.trim();
-  const role  = document.getElementById('set-role').value;
-  if (!name)  { alert('Нэрээ оруулна уу!'); return; }
-  if (!email.includes('@')) { alert('Зөв имэйл оруулна уу!'); return; }
-  sessionStorage.setItem('user_name',  name);
-  sessionStorage.setItem('user_email', email);
-  sessionStorage.setItem('user_role',  role);
-  flashConfirm('acc-confirm');
-}
-
-function changePassword() {
-  const oldPw  = document.getElementById('old-pw').value;
-  const newPw  = document.getElementById('new-pw').value;
-  const newPw2 = document.getElementById('new-pw2').value;
-  if (!oldPw)  { alert('Одоогийн нууц үгээ оруулна уу!'); return; }
-  if (newPw.length < 6) { alert('Шинэ нууц үг хамгийн багадаа 6 тэмдэгт байх ёстой!'); return; }
-  if (newPw !== newPw2) { alert('Нууц үг таарахгүй байна!'); return; }
-  document.getElementById('old-pw').value  = '';
-  document.getElementById('new-pw').value  = '';
-  document.getElementById('new-pw2').value = '';
-  flashConfirm('pw-confirm');
-}
-
-function saveNotifications() { flashConfirm('notif-confirm'); }
-function saveAppearance()    { flashConfirm('app-confirm'); }
-
-function toggleDark(cb) {
-  document.body.style.filter = cb.checked ? 'invert(1) hue-rotate(180deg)' : '';
-}
-
-function clearProgress() {
-  if (!confirm('Дэвшлийн бүх өгөгдлийг устгах уу?')) return;
-  Object.keys(localStorage).forEach(k => {
-    if (k.startsWith('progress_') || k.startsWith('exam_score_') || k === 'cp_notes') {
-      localStorage.removeItem(k);
-    }
-  });
-  alert('Дэвшлийн өгөгдөл арилгагдлаа.');
-}
-
-function deleteAccount() {
-  if (!confirm('Бүртгэлийг бүрмөсөн устгах уу? Энэ үйлдлийг буцаах боломжгүй!')) return;
-  sessionStorage.clear();
-  localStorage.clear();
-  window.location.href = 'login.html';
-}
-</script>
+<script src="../js/load.js"></script>
+<script src="../js/settings.js"></script>
 </body>
 </html>

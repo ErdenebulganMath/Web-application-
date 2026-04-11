@@ -2,7 +2,7 @@
 
 
 // Load JSON and render cards
-fetch('data/courses.json')
+fetch('../data/courses.json')
   .then(res => res.json())
   .then(data => {
     renderCourses(data);
@@ -27,7 +27,7 @@ function renderCourses(courses) {
       </div>
       <h3 class="course-title">${course.title}</h3>
       <div class="instructor">
-        <img src="images/geometry.png" class="instructor-avatar" />
+        <img src="../images/geometry.png" class="instructor-avatar" />
         <span>Багш: ${course.instructor}</span>
       </div>
       <div class="course-info">

@@ -1,149 +1,10 @@
-<!DOCTYPE html>
-<html lang="mn">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>EduLearn – Шалгалтууд</title>
-  <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" href="css/sidebar.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Fraunces:ital,wght@0,700;1,400&display=swap" rel="stylesheet" />
-  <style>
-    .exams-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 20px;
-      margin-top: 28px;
-    }
-    .exam-item {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
-      transition: transform .22s, box-shadow .22s;
-      display: flex; flex-direction: column;
-    }
-    .exam-item:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(91,33,182,.12); }
-    .exam-item img { width: 100%; height: 155px; object-fit: cover; display: block; }
-    .exam-body { padding: 16px 18px 18px; display: flex; flex-direction: column; flex: 1; }
-    .exam-tag {
-      display: inline-block;
-      font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
-      color: var(--rose); background: #fff1f2;
-      padding: 3px 10px; border-radius: 99px; margin-bottom: 8px;
-    }
-    .exam-body h3 { font-size: 15px; font-weight: 600; margin-bottom: 6px; color: var(--text); }
-    .exam-body p  { font-size: 12.5px; color: var(--muted); line-height: 1.55; margin-bottom: 14px; flex: 1; }
-    .exam-meta { display: flex; gap: 14px; font-size: 12px; color: var(--muted); margin-bottom: 14px; flex-wrap: wrap; }
-    .exam-meta i { color: var(--violet-mid); }
-    .difficulty {
-      display: inline-flex; align-items: center; gap: 5px;
-      font-size: 11px; font-weight: 700; padding: 3px 10px;
-      border-radius: 99px; margin-bottom: 14px;
-    }
-    .diff-easy   { background: #dcfce7; color: #16a34a; }
-    .diff-medium { background: #fef9c3; color: #ca8a04; }
-    .diff-hard   { background: #fee2e2; color: #dc2626; }
-    .exam-btn {
-      display: inline-flex; align-items: center; gap: 7px;
-      background: var(--rose); color: #fff;
-      padding: 10px 20px; border-radius: 8px;
-      font-size: 13px; font-weight: 600;
-      border: none; cursor: pointer; text-decoration: none;
-      transition: background .15s, transform .15s;
-      align-self: flex-start;
-    }
-    .exam-btn:hover { background: #be123c; transform: translateY(-1px); }
-    .score-badge {
-      font-size: 12px; font-weight: 700;
-      background: var(--violet-light); color: var(--violet-mid);
-      padding: 3px 10px; border-radius: 99px; margin-left: auto;
-    }
-
-    /* Quiz modal */
-    .modal-overlay {
-      display: none; position: fixed; inset: 0;
-      background: rgba(0,0,0,.45); z-index: 500;
-      align-items: center; justify-content: center;
-    }
-    .modal-overlay.open { display: flex; }
-    .modal {
-      background: var(--white); border-radius: 20px;
-      padding: 32px 36px; max-width: 520px; width: 92%;
-      box-shadow: 0 20px 60px rgba(0,0,0,.18);
-      animation: fadeUp .2s ease;
-    }
-    @keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
-    .modal h2 { font-family:'Fraunces',serif; font-size:22px; margin-bottom:6px; }
-    .modal p.sub { font-size:13px; color:var(--muted); margin-bottom:22px; }
-    .question-text { font-size:14.5px; font-weight:600; margin-bottom:14px; }
-    .options label {
-      display: flex; align-items: center; gap: 10px;
-      padding: 10px 14px; border-radius: 10px;
-      border: 1px solid var(--border); margin-bottom: 8px;
-      cursor: pointer; font-size: 13.5px;
-      transition: background .12s, border-color .12s;
-    }
-    .options label:hover { background: var(--violet-pale); border-color: #c4b5fd; }
-    .options input[type=radio] { accent-color: var(--violet-mid); }
-    .options label.correct  { background: #dcfce7; border-color: #86efac; }
-    .options label.wrong    { background: #fee2e2; border-color: #fca5a5; }
-    .modal-actions { display:flex; justify-content:flex-end; gap:10px; margin-top:20px; }
-    .btn-next {
-      background: var(--violet-mid); color:#fff; border:none;
-      padding: 10px 22px; border-radius:8px;
-      font-family:'Sora',sans-serif; font-size:13px; font-weight:600;
-      cursor:pointer; transition:background .15s;
-    }
-    .btn-next:hover { background:var(--violet); }
-    .btn-close {
-      background: transparent; color:var(--muted); border:1px solid var(--border);
-      padding: 10px 18px; border-radius:8px;
-      font-family:'Sora',sans-serif; font-size:13px; font-weight:600;
-      cursor:pointer;
-    }
-    .result-box { text-align:center; padding:10px 0; }
-    .result-score { font-size:52px; font-weight:700; color:var(--violet-mid); }
-    .result-msg   { font-size:15px; color:var(--muted); margin-top:6px; }
-  </style>
-</head>
-<body>
-
-<div id="sidebar-container"></div>
-
-<div class="page">
-  <div class="section-head">
-    <div>
-      <h2>Математикийн <span>шалгалтууд</span></h2>
-      <p style="margin-top:4px">Мэдлэгээ шалгаад өөрийгөө дэвшүүл</p>
-    </div>
-  </div>
-
-  <div class="exams-grid" id="examsGrid"></div>
-</div>
-
-<!-- QUIZ MODAL -->
-<div class="modal-overlay" id="modalOverlay">
-  <div class="modal" id="modalBox">
-    <h2 id="modalTitle"></h2>
-    <p class="sub" id="modalSub"></p>
-    <div id="quizArea"></div>
-    <div class="modal-actions">
-      <button class="btn-close" onclick="closeModal()">Болих</button>
-      <button class="btn-next" id="btnNext" onclick="nextQuestion()">Дараагийн асуулт</button>
-    </div>
-  </div>
-</div>
-
-<script src="js/load.js"></script>
-<script>
 const exams = [
   {
     title: "Алгебрийн шалгалт",
     category: "Алгебр",
     desc: "Тэгшитгэл, олон гишүүнт болон функцийн мэдлэгийг шалгана.",
     questions: 10, duration: 20, difficulty: "medium",
-    image: "images/algebry.jpg",
+    image: "../images/algebry.jpg",
     quiz: [
       { q: "x² - 5x + 6 = 0 тэгшитгэлийн шийдүүд?",
         opts: ["x=2, x=3","x=-2, x=-3","x=1, x=6","x=-1, x=-6"], ans: 0 },
@@ -162,7 +23,7 @@ const exams = [
     category: "Геометр",
     desc: "Гурвалжин, тойрог болон талбайн тооцооллын чадварыг шалгана.",
     questions: 10, duration: 25, difficulty: "medium",
-    image: "images/geometry.png",
+    image: "../images/geometry.png",
     quiz: [
       { q: "Гурвалжины өнцгүүдийн нийлбэр хэд вэ?",
         opts: ["90°","180°","270°","360°"], ans: 1 },
@@ -181,7 +42,7 @@ const exams = [
     category: "Тригонометр",
     desc: "sin, cos, tan функцийн утга болон тэгшитгэл шийдвэрлэх дадлага.",
     questions: 8, duration: 20, difficulty: "hard",
-    image: "images/trignometry.jpg",
+    image: "../images/trignometry.jpg",
     quiz: [
       { q: "sin(30°) = ?",
         opts: ["0.5","√2/2","√3/2","1"], ans: 0 },
@@ -200,7 +61,7 @@ const exams = [
     category: "Арифметик",
     desc: "Үндсэн тооны үйлдлүүд, бутархай болон хувийн тооцоог шалгана.",
     questions: 10, duration: 15, difficulty: "easy",
-    image: "images/algebry.jpg",
+    image: "../images/algebry.jpg",
     quiz: [
       { q: "15 × 8 = ?",
         opts: ["100","110","120","130"], ans: 2 },
@@ -219,7 +80,7 @@ const exams = [
     category: "Комбинаторик",
     desc: "Зөвшөөрөл, хослол болон тооллын аргуудыг шалгана.",
     questions: 8, duration: 20, difficulty: "hard",
-    image: "images/data_analysis.jpg",
+    image: "../images/data_analysis.jpg",
     quiz: [
       { q: "5! = ?",
         opts: ["60","100","120","240"], ans: 2 },
@@ -238,7 +99,7 @@ const exams = [
     category: "Тооны онол",
     desc: "Анхны тоо, хуваагдах чанар болон дундаж зэрэглэлийн ойлголтыг шалгана.",
     questions: 8, duration: 20, difficulty: "hard",
-    image: "images/geometry.jpg",
+    image: "../images/geometry.jpg",
     quiz: [
       { q: "100-аас бага анхны тооны тоо хэд вэ?",
         opts: ["23","24","25","26"], ans: 2 },
@@ -365,6 +226,3 @@ function closeModal() {
 }
 
 renderExams();
-</script>
-</body>
-</html>
